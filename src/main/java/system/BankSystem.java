@@ -38,7 +38,7 @@ public class BankSystem {
     }
 
     public static boolean checkAccountState(Cash cash, Client client) {
-        if (cash.getAmount() >= client.getAccountState()) {
+        if (cash.getAmount() <= client.getAccountState()) {
             return true;
         }
         return false;

@@ -54,11 +54,12 @@ public class CashWithdrawalService {
         TimeUnit.SECONDS.sleep(2);
 
         if (pinCheck) {
-            System.out.println("Pin poprawny.\nTwój stan konta: " + client.getAccountState() + " PLN. Wprowadź kwotę jaką chcesz wyłacić.");
+            System.out.println("Pin poprawny.\nTwój stan konta: " + client.getAccountState() + " PLN. Wprowadź kwotę jaką chcesz wypłacić.");
             Float amount = scan.nextFloat();
             Cash cash = new Cash(amount, "PLN");
             boolean accountStateCheck = BankSystem.checkAccountState(cash, client);
             if (accountStateCheck) {
+                client.setAccountState(client.getAccountState() - amount);
                 Confirmation confirmation = BankSystem.printConfirmation(bdm, client, cash);
                 System.out.println("Operacja zakończona powodzeniem. Odbierz gotówkę. Trwa drukowanie potwierdzenia...");
                 TimeUnit.SECONDS.sleep(2);
