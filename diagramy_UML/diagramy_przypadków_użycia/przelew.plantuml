@@ -1,0 +1,32 @@
+'Diagram przypadków użycia - przelew elektroniczny lub w placówce
+@startuml
+
+actor Klient as K
+
+actor Pracownik as P
+actor PracownikPlacówki as PP
+actor PracownikInfolinii as PI
+
+entity SystemBankowy as S
+
+rectangle BankAccountService {
+    usecase "Instrukcja przelewu dla pracownika" as instrukcja
+    usecase "Elektroniczna instrukcja przelewu" as e_instrukcja
+    usecase "Weryfikacja środków na koncie" as weryfikacja
+    usecase "Polecenie przelewu" as polecenie
+}
+
+PP --|> P : <<extneds>>
+PI --|> P : <<extends>>
+
+K -- instrukcja
+PP -- instrukcja
+K -- e_instrukcja
+S -- e_instrukcja
+S -- polecenie
+S - weryfikacja
+instrukcja --> weryfikacja : <<invoke>>
+e_instrukcja --> weryfikacja : <<invoke>>
+weryfikacja --> polecenie : <<invoke>>
+
+@enduml

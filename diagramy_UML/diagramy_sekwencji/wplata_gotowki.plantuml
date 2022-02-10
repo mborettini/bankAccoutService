@@ -1,0 +1,34 @@
+'Diagram sekwencji - wpłata gotówki we wpłatomacie lub w placówce
+@startuml
+
+actor Klient
+actor PracownikPlacowki
+
+alt stacjonarnie
+    Klient -> PracownikPlacowki : powitanie
+    return 
+    Klient -> PracownikPlacowki : wreczenie_pieniedzy
+    PracownikPlacowki -> System : zarejestrowanie(kwota)
+    activate System
+    System --> PracownikPlacowki : potwierdzenie
+    deactivate System
+    PracownikPlacowki --> Klient : potwierdzenie
+else wplatomat
+    Klient -> Wplatomat : wprowadzenie_karty
+    activate Wplatomat
+    activate System
+    System -> Wplatomat : popros_o_PIN
+    Wplatomat --> Klient : podaj_PIN
+    Klient -> Wplatomat : wprowadzenie_PINu(PIN)
+    Wplatomat --> System : weryfikacja(PIN)
+    System --> Wplatomat : ok
+    Wplatomat --> Klient : podaj_pieniadze
+    Klient -> Wplatomat : wreczenie_pieniedzy(gotowka)
+    Wplatomat -> System : zarejestorwanie_transakcji
+    System --> Wplatomat : potwierdzenie
+    Wplatomat --> Klient : wydruk_potwierdzenia
+    deactivate System
+    deactivate Wplatomat
+end
+
+@enduml

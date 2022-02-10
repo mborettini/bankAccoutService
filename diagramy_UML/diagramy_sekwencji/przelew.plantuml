@@ -1,0 +1,27 @@
+'Diagram sekwencji - przelew elektroniczny lub w placówce
+@startuml
+
+actor Klient
+actor PracownikPlacowki
+
+alt stacjonarnie
+    Klient -> PracownikPlacowki : powitanie
+    return 
+    Klient -> PracownikPlacowki : kwota, odbiorca, tytul_przelewu
+    PracownikPlacowki -> System : weryfikacja_srodkow(kwota)
+    activate System
+    System --> PracownikPlacowki : ok
+    PracownikPlacowki -> System : polecenie_przelewu(kwota, odbiorca, tytul_przelewu)
+    System --> PracownikPlacowki : potwierdzenie
+    deactivate System
+    PracownikPlacowki --> Klient : potwierdzenie
+else elektronicznie
+    Klient -> System : polecenie_przelewu(kwota, odbiorca, tytul_przelewu)
+    activate System
+    System --> Klient : wymog_potwierdzenia_w_aplikacji
+    Klient -> System : autoryzacja_platnosci
+    System --> Klient : potwierdzenie
+    deactivate System
+end
+
+@enduml

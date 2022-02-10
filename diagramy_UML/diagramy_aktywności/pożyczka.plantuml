@@ -1,0 +1,25 @@
+'Diagram aktywności - pożyczka (wniosek elektroniczny lub złożony w placówce)
+@startuml
+
+(*) --> "Klient"
+if "Wniosek o pożyczkę" as wniosek then
+    -->[stacjonarnie] "Udanie się do placówki banku"
+        --> "Zlozenie wniosku o pozyczke"
+        --> "Wprowadzenie wniosku o pożyczkę do systemu" as system
+        --> "Weryfikacja zdolności kredytowej" as weryfikacja
+else 
+    --> [elektronicznie] system
+    --> weryfikacja
+    if "Klient zdolny"
+        --> [Yes] "Udzielenie pożyczki (wypłata środków)"
+        --> (*)
+    else 
+        --> [No] "Odmowa"
+        --> "Zmiana kryteriów pożyczki"
+        --> wniosek
+    endif
+else
+    --> [Cancel] (*)
+endif
+
+@enduml

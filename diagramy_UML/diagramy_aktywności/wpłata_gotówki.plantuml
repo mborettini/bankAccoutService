@@ -1,0 +1,30 @@
+'Diagram aktywności - wpłata gotówki we wpłatomacie lub w placówce
+@startuml
+
+(*) --> "Klient"
+if "Wpłata gotówki" as wplata then
+    -->[stacjonarnie] "Udanie się do placówki banku"
+    --> "Wręczenie pieniedzy" as wreczenie
+    --> "Zarejestrowanie w systemie" as zarejestrowanie
+else 
+    --> [wpłatomat] "Udanie się do wpłatomatu"
+    --> "Wprowadzenie karty płatniczej"
+    --> "Wprowadzenie nr PIN"
+    if "PIN poprawny"
+        --> [Yes] wreczenie
+        --> zarejestrowanie
+        if "Sukces"
+            --> [Yes] "Wyruk potwierdzenia"
+            --> (*)
+        else 
+            --> [No] "Zwrot pieniędzy"
+            --> "Wydruk informacji o nieudanej operacji"
+            --> wplata
+        endif
+    else
+        --> [No] wplata
+else
+    --> [Cancel] (*)
+endif
+
+@enduml

@@ -1,0 +1,27 @@
+'Diagram aktywności - wyplata gotówki we wpłatomacie lub w placówce
+@startuml
+
+(*) --> "Klient"
+if "Wypłata gotówki" as wyplata then
+    -->[stacjonarnie] "Udanie się do placówki banku"
+    --> "Określenie kwoty" as kwota
+    --> "Weryfikacja stanu środków na koncie" as weryfikacja
+else 
+    --> [bankomat] "Udanie się do wpłatomatu"
+    --> "Wprowadzenie karty płatniczej"
+    --> "Wprowadzenie nr PIN"
+    --> kwota
+    --> weryfikacja
+    if "Sukces"
+        --> [Yes] "Wydanie pieniędzy"
+        --> "Wydruk potwierdzenia"
+        --> (*)
+    else 
+        --> [No] "Wydruk informacji o nieudanej operacji"
+        --> wyplata
+    endif
+else
+    --> [Cancel] (*)
+endif
+
+@enduml

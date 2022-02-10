@@ -1,0 +1,24 @@
+'Diagram aktywności - uzyskanie pomocy lub informacji w placówce lub przez infolinię
+@startuml
+
+(*) --> "Klient"
+if "Uzyskanie pomocy lub informacji" as informacja then
+    -->[stacjonarnie] "Udanie się do placówki banku"
+    --> "Weryfikacja klienta w systemie" as weryfikacja
+    --> "Przedstawienie problemu" as problem
+    --> "Udzielenie instrukcji" as instrukcja
+else 
+    --> [zdalnie] "Kontakt z infolinią"
+    --> weryfikacja
+    --> problem
+    --> instrukcja
+    if "Rozwiązanie problemu"
+        --> [Yes] (*)
+    else 
+        --> [No] informacja
+    endif
+else
+    --> [Cancel] (*)
+endif
+
+@enduml

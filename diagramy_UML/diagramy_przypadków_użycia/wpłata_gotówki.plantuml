@@ -1,0 +1,46 @@
+'Diagram przypadków użycia - wpłata gotówki we wpłatomacie lub w placówce
+@startuml
+
+actor Klient as K
+
+actor Pracownik as P
+actor PracownikPlacówki as PP
+actor PracownikInfolinii as PI
+
+entity Wplatomat as W
+entity SystemBankowy as S
+
+rectangle BankAccountService {
+    usecase "Udanie się do wpłatomatu" as wplatomat
+    usecase "Udanie się do placówki banku" as placowka
+    usecase "Wprowadzenie karty płatniczej" as karta
+    usecase "Wprowadzenie nr PIN" as pin
+    usecase "Wręczenie pieniędzy" as wreczenie
+    usecase "Zarejestrowanie w systemie" as zarejestrowanie
+    usecase "Wydruk potwierdzenia" as wydruk
+}
+
+PP --|> P : <<extends>>
+PI --|> P : <<extends>>
+W --|> S : <<extends>>
+
+K -- wplatomat
+K -- placowka
+K -- wreczenie
+PP -- wreczenie 
+W -- wreczenie
+K -- karta
+W -- karta
+K -- pin
+W -- pin
+S -- zarejestrowanie
+PP -- wydruk
+W -- wydruk
+wplatomat --> karta : <<invoke>>
+karta --> pin : <<invoke>>
+pin --> wreczenie : <<invoke>>
+wreczenie --> zarejestrowanie : <<invoke>>
+zarejestrowanie --> wydruk : <<invoke>>
+placowka --> wreczenie : <<invoke>>
+
+@enduml

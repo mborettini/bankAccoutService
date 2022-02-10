@@ -1,0 +1,145 @@
+'Diagram klas
+@startuml
+
+class Czlowiek{
+    nrPESEL : long
+    firstName : string
+    middleName : string
+    lastName : string
+    dateOfBirth : localdate
+    email : string
+    phone : long
+    city : string
+    street : string
+    postalCode : string
+}
+
+class Urzadzenie{
+    number : long
+    city : string
+    street : string
+    postalCode : string
+    wprowadzenie(karta) : Karta
+    wprowadzenie(pin)
+    wplata(gotowka) : Gotowka
+    wydruk(potwierdzenie) : Potwierdzenie
+}
+
+class Klient{
+    id : long
+    accountState : long
+    creditCard : karta
+}
+
+class Pracownik{
+    id : long
+    firstName : string
+    lastName : street
+    position : string
+}
+
+class PracownikPlacowki{
+
+}
+
+class PracownikInfolinii{
+
+}
+
+class Bankomat{
+
+}
+
+class Wplatomat{
+
+}
+
+class BiuroInformacjiKredytowej{
+    weryfikacja(zdolnosc) : Boolean
+}
+
+class Karta {
+    cardNumber : long
+    nrPIN : integer
+}
+
+class Potwierdzenie{
+    confirmationId : long
+    deviceId : long
+    operationDate : localdate
+    amount : long
+    clientId : long
+    accountStateAfterOperation : long
+}
+
+class Gotowka{
+    amount : float
+    currency : string
+}
+
+class Wniosek{
+    id : long
+    nrPESEL : long
+    firstName : string
+    middleName : string
+    lastName : string
+    dateOfBirth : localdate
+    amout : long
+    earnings : long
+    spending : long
+}
+
+class Przelew{
+    recipientName : string
+    recipientBankAccount : string
+    title : string
+    amount : long
+}
+
+class UI{
+    logowanie() : Pracownik
+    logowanie() : Klient
+    wprowadzanie_danych()
+    wyswietlanie_informacji()
+}
+
+
+class AplikacjaMobilna{}
+class WebUI{}
+
+class SystemBankowy{
+    verifyApplication() : Wniosek
+    verifyCreditCard() : Karta
+    postDeposit() : Gotowka
+    checkAccountState()
+    printConfirmation() : Potwierdzenie
+    printRejection()
+}
+
+Pracownik --|> Czlowiek
+Klient --|> Czlowiek
+PracownikPlacowki --|> Pracownik
+PracownikInfolinii --|> Pracownik
+AplikacjaMobilna --|> UI
+WebUI --|> UI
+Wplatomat --|> Urzadzenie
+Bankomat --|> Urzadzenie
+
+
+Bankomat "gotowka" -- Gotowka
+Wplatomat "gotowka" -- Gotowka
+Bankomat "karta" -- Karta
+Wplatomat "karta" -- Karta
+Bankomat "potwierdzenie" -- Potwierdzenie
+Wplatomat "potwierdzenie" -- Potwierdzenie
+UI "potwierdzenie" -- Potwierdzenie
+UI "wniosek" -- Wniosek
+UI "przelew" -- Przelew
+SystemBankowy "BIK" -- BiuroInformacjiKredytowej
+SystemBankowy "UI" -- UI
+SystemBankowy "bankomat" *-- Bankomat
+SystemBankowy "wplatomat" *-- Wplatomat
+SystemBankowy "pracownicy" *-- Pracownik
+SystemBankowy "klienci" *-- Klient
+
+@enduml

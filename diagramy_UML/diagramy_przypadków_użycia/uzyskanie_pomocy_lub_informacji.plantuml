@@ -1,0 +1,41 @@
+'Diagram przypadków użycia - uzyskanie pomocy lub informacji w placówce lub przez infolinię
+@startuml
+
+actor Klient as K
+
+actor Pracownik as P
+actor PracownikPlacówki as PP
+actor PracownikInfolinii as PI
+
+entity SystemBankowy as S
+
+rectangle BankAccountService {
+    usecase "Zgłoszenie potrzeby pomocy" as pomoc
+    usecase "Udanie się do placówki" as placowka
+    usecase "Kontakt z infolinią" as infolinia
+    usecase "Przedstawienie problemu" as problem
+    usecase "Weryfikacja klineta w systemie" as weryfikacja
+    usecase "Udzielenie instrukcji" as instrukcja
+}
+
+PP --|> P : <<extends>>
+PI --|> P : <<extends>>
+
+K -- pomoc
+K -- problem
+P -- problem
+PP -- placowka
+K -- placowka
+PI -- infolinia
+K -- infolinia
+S -- weryfikacja
+P -- instrukcja
+K -- instrukcja
+placowka --> pomoc : <<extends>>
+infolinia --> pomoc : <<extends>>
+placowka --> weryfikacja : <<invoke>>
+infolinia --> weryfikacja : <<invoke>>
+weryfikacja --> problem : <<invoke>>
+problem --> instrukcja : <<invoke>>
+
+@enduml

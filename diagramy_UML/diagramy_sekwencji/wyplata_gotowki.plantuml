@@ -1,0 +1,38 @@
+'Diagram sekwencji - wyplata gotówki we wpłatomacie lub w placówce
+@startuml
+
+actor Klient
+actor PracownikPlacowki
+
+alt stacjonarnie
+    Klient -> PracownikPlacowki : powitanie
+    return 
+    Klient -> PracownikPlacowki : kwota
+    PracownikPlacowki -> System : weryfikacja_srodkow_na_koncie(kwota)
+    activate System
+    System --> PracownikPlacowki : ok
+    PracownikPlacowki -> System : polecenie_wyplaty(kwota)
+    System --> PracownikPlacowki : wydanie_pieniedzy(kwota)
+    deactivate System
+    PracownikPlacowki --> Klient : wydanie_pieniedzy(kwota)
+    PracownikPlacowki --> Klient : potwierdzenie
+else bankomat
+    Klient -> Bankomat : wprowadzenie_karty
+    activate Bankomat
+    activate System
+    System -> Bankomat : popros_o_PIN
+    Bankomat --> Klient : podaj_PIN
+    Klient -> Bankomat : wprowadzenie_PINu(PIN)
+    Bankomat --> System : weryfikacja(PIN)
+    System --> Bankomat : ok
+    Bankomat --> Klient : podaj_kwote
+    Klient -> Bankomat : kwota
+    Bankomat -> System : wyplac_srodki(kwota)
+    System --> Bankomat : wyplata(kwota)
+    Bankomat --> Klient : wyplata(kwota)
+    Bankomat --> Klient : wydruk_potwierdzenia
+    deactivate System
+    deactivate Bankomat
+end
+
+@enduml

@@ -1,0 +1,24 @@
+'Diagram aktywności - przelew elektroniczny lub w placówce
+@startuml
+
+(*) --> "Klient"
+if "Przelew" as przelew then
+    -->[stacjonarnie] "Udanie się do placówki banku"
+    --> "Instrukcja przelewu dla pracownika"
+    --> "Weryfikacja środków na koncie" as weryfikacja
+else 
+    --> [elektronicznie] "Elektroniczna instrukcja przelewu"
+    --> weryfikacja
+    if "Zapewniono środki"
+        --> [Yes] "Polecenie przelewu"
+        --> (*)
+    else
+        --> [No] "Brak wystarczających środków"
+        --> "Zmiana kwoty przelewu"
+        --> przelew
+    endif
+else
+    --> [Cancel] (*)
+endif
+
+@enduml

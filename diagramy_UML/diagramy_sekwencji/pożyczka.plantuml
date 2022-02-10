@@ -1,0 +1,33 @@
+'Diagram sekwencji - pożyczka (wniosek elektroniczny lub złożony w placówce)
+@startuml
+
+actor Klient
+actor PracownikPlacowki
+
+Klient -> PracownikPlacowki : powitanie
+return 
+Klient -> PracownikPlacowki : kwota, przychody, wydatki
+PracownikPlacowki -> System : zlozenie_wniosku_o_pozyczke(kwota, przychody, wydatki, zobowiązania)
+activate System
+System -> BiuroInformacjiKredytowej : weryfikacja_zdolnosci_kredytowej(wniosek)
+activate BiuroInformacjiKredytowej
+BiuroInformacjiKredytowej --> System : decyzja
+deactivate BiuroInformacjiKredytowej
+System --> PracownikPlacowki : decyzja
+deactivate System
+PracownikPlacowki --> Klient : decyzja
+
+alt akceptacja
+    System --> PracownikPlacowki : wydruk_umowy_pozyczki
+    activate System
+    System --> PracownikPlacowki : wyplata_srodkow
+    deactivate System
+    PracownikPlacowki --> Klient : wydruk_umowy_pozyczki
+    PracownikPlacowki --> Klient : wyplata_srodkow
+
+else odmowa
+    return zmiana_kryterow_pozyczki
+    Klient -> PracownikPlacowki : kwota, przychody, wydatki, zobowiązania
+end
+
+@enduml

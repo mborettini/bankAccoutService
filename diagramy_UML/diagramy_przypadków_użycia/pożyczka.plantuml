@@ -1,0 +1,39 @@
+'Diagram przypadków użycia - pożyczka (wniosek elektroniczny lub złożony w placówce)
+@startuml
+
+actor Klient as K
+
+actor Pracownik as P
+actor PracownikPlacówki as PP
+actor PracownikInfolinii as PI
+
+entity SystemBankowy as S
+entity BiuroInformacjiKredytowej as B
+
+rectangle BankAccountService {
+    usecase "Udanie się do placówki banku" as placowka
+    usecase "Złożenie wniosku o pożyczkę" as wniosek
+    usecase "Wprowadzenie wniosku o pożyczkę do systemu" as system
+    usecase "Weryfikacja zdolności kredytowej" as weryfikacja
+    usecase "Udzielenie pożyczki (wypłata środków)" as udzielenie
+}
+
+PP --|> P : <<extends>>
+PI --|> P : <<extends>>
+
+K -- system
+PP - system
+K -- placowka
+K -- wniosek
+PP -- wniosek
+B -- weryfikacja
+S - weryfikacja
+PP - udzielenie
+S -- udzielenie
+K -- udzielenie
+placowka --> wniosek : <<invoke>>
+wniosek --> system : <<invoke>>
+system --> weryfikacja : <<invoke>>
+weryfikacja --> udzielenie : <<invoke>>
+
+@enduml

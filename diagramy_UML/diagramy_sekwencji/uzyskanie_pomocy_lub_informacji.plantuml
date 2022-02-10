@@ -1,0 +1,17 @@
+'Diagram sekwencji - uzyskanie pomocy lub informacji w placówce lub przez infolinię
+@startuml
+
+actor Klient
+actor Pracownik
+
+Klient -> Pracownik : powitanie
+return 
+Klient -> Pracownik : nrPESEL
+Pracownik -> System : weryfikacja_klienta(nrPESEL)
+activate System
+System --> Pracownik : ok
+deactivate System
+Klient -> Pracownik : przedstawienie problemu
+Pracownik --> Klient : udzielenie_instrukcji
+
+@enduml
